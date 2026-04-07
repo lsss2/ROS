@@ -37,12 +37,22 @@ def generate_launch_description():
                                    'config', 'mapper_params_online_sync.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 
+    # --- MODIFICACIÓN AQUÍ: Parámetros forzados para IngenIA ---
     start_sync_slam_toolbox_node = LifecycleNode(
         parameters=[
-          slam_params_file,
+          slam_params_file, # Carga el YAML por defecto
           {
+            
             'use_lifecycle_manager': use_lifecycle_manager,
-            'use_sim_time': use_sim_time
+            'use_sim_time': use_sim_time,
+            'min_laser_range': 0.3,
+            'max_laser_range': 20.0,
+            'link_match_minimum_response_fine': 0.1,
+            'odom_frame': 'odom',
+            'base_frame': 'base_footprint',
+            'scan_topic': '/scan_raw',
+            'map_frame': 'map',
+            'mode': 'mapping'
           }
         ],
         package='slam_toolbox',

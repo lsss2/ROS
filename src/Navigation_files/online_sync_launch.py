@@ -24,19 +24,23 @@ def generate_launch_description():
         'autostart', default_value='true',
         description='Automatically startup the slamtoolbox. '
                     'Ignored when use_lifecycle_manager is true.')
+    
     declare_use_lifecycle_manager = DeclareLaunchArgument(
         'use_lifecycle_manager', default_value='false',
         description='Enable bond connection during node activation')
+    
     declare_use_sim_time_argument = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
         description='Use simulation/Gazebo clock')
+    
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
         default_value=os.path.join(get_package_share_directory("slam_toolbox"),
                                    'config', 'mapper_params_online_sync.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 
+    # --- AQUÍ ESTÁ EL CAMBIO CLAVE ---
     start_sync_slam_toolbox_node = LifecycleNode(
         parameters=[
           slam_params_file,
@@ -49,8 +53,13 @@ def generate_launch_description():
         executable='sync_slam_toolbox_node',
         name='slam_toolbox',
         output='screen',
-        namespace=''
+        namespace='',
+        # Esta línea mapea el tópico /scan (que busca SLAM) al /scan_raw (que emite TIAGo)
+        remappings=[
+            ('/scan', '/scan_raw')
+        ]
     )
+    # ---------------------------------
 
     configure_event = EmitEvent(
         event=ChangeState(

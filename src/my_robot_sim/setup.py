@@ -18,6 +18,7 @@ setup(
     (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
     (os.path.join('share', package_name, 'navigation'), glob('navigation/*.yaml')),
     (os.path.join('share', package_name, 'navigation'), glob('navigation/*.rviz')),
+    (os.path.join('share', package_name, 'urdf'), glob(os.path.join('urdf', '*.urdf'))),
     (os.path.join('share', package_name, 'navigation'), glob('navigation/*.py')), # for SLAM_launch.py
 ],
     install_requires=['setuptools'],
